@@ -1,6 +1,6 @@
 # OPB-Prijave-plesna-tekmovanja
 
-V sklopu predmeta Osnove podatkovnih baz bom naredila projekt oz. aplikaciijo namenjeno plesnim šolam Slovenije, preko katere lahko svoje plesalce prijavijo na tekmovanja. Uporabniki aplikacije bodo samo plesne šole. Imele bodo vpogled v prihajajoča tekmovanja in seznam plesalcev, ki so v plesni šoli vpisane.
+V sklopu predmeta Osnove podatkovnih baz bom naredila projekt oz. aplikaciijo namenjeno plesnim šolam Slovenije, preko katere lahko svoje plesalce prijavijo na tekmovanja. Uporabniki aplikacije bodo samo plesne šole. Imele bodo vpogled v prihajajoča tekmovanja in seznam plesalcev, ki so v plesno šolo vpisani.
 
 ## ER-diagram
 
