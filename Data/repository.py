@@ -41,6 +41,26 @@ class Repo:
 
         return plesalci
 
+    def dobi_plesalce_sole(self, id_sole: int) -> List[plesalec]: #seznam vseh plesalcev na neki soli
+           self.cur.execute("""
+           SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
+           FROM plesalec
+           WHERE id_sole = %s  
+           ORDER BY priimek, ime
+           """, (id_sole,))
+
+           plesalci = [plesalec.from_dict(t) for t in self.cur.fetchall()]
+
+           return plesalci
+
+    def dodaj_plesalca(self, t: plesalec): #če za nekega plesalca še ni podatkov v aplikaciji, ga šola lahko doda
+           self.cur.execute("""
+           INSERT INTO plesalec (ime, priimek, emso, datum_rojstva, spol, id_sole)
+           VALUES (%s, %s, %s, %s, %s, %s)
+           """, (t.ime, t.priimek, t.emso, t.datum_rojstva, t.spol, t.id))
+
+           self.conn.commit()
+
     def dobi_sole(self) -> List[plesna_sola]:
             self.cur.execute("""
                 SELECT id, ime, naslov, kontakt
