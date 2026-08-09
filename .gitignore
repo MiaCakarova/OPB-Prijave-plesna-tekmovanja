@@ -2,3 +2,4 @@ env/
 *pycache*
 *.pyc
 Data/auth.py
+test_baza.py

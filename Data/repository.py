@@ -6,10 +6,14 @@ import psycopg2.extras
 
 import Data.auth as auth
 
+from typing import List
+
+from Data.models import (plesalec, plesna_sola, tekmovanje, prijava)
+
 
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 
-DB_PORT = os.environ.get("POSTGRES_PORT", 5432)
+DB_PORT = os.environ.get("POSTGRES_PORT", 5432) #povežemo se z bazo
 
 
 class Repo:
@@ -26,11 +30,46 @@ class Repo:
             cursor_factory=psycopg2.extras.DictCursor
         )
 
-    def dobi_plesalce(self):
+    def dobi_plesalce(self) -> List[plesalec]:
         self.cur.execute("""
             SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
             FROM plesalec
             ORDER BY priimek, ime
         """)
 
-        return self.cur.fetchall()
+        plesalci = [plesalec.from_dict(t) for t in self.cur.fetchall()]
+
+        return plesalci
+
+    def dobi_sole(self) -> List[plesna_sola]:
+            self.cur.execute("""
+                SELECT id, ime, naslov, kontakt
+                FROM plesna_sola
+                ORDER BY  ime
+            """)
+    
+            sole = [plesna_sola.from_dict(t) for t in self.cur.fetchall()]
+    
+            return sole
+
+    def dobi_tekmovanja(self) -> List[tekmovanje]:
+                self.cur.execute("""
+                    SELECT id_tekmovanja, ime, lokacija, datum_od, datum_do
+                    FROM tekmovanje
+                    ORDER BY  datum_od
+                """)
+        
+                tekmovanja = [tekmovanje.from_dict(t) for t in self.cur.fetchall()]
+        
+                return tekmovanja
+
+    def dobi_prijave(self) -> List[prijava]:
+                self.cur.execute("""
+                    SELECT id_prijave, id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina
+                    FROM prijava
+                    ORDER BY  id_prijave
+                """)
+        
+                prijave = [prijava.from_dict(t) for t in self.cur.fetchall()]
+        
+                return prijave
