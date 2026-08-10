@@ -1,0 +1,34 @@
+<div>
+    <h2>Moji plesalci</h2>
+
+    <br>
+
+    <div style="display: flex;">
+        <div style="flex:1;">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Priimek</th>
+                        <th>EMŠO</th>
+                        <th>Datum rojstva</th>
+                        <th>Spol</th>
+                    </tr>
+                </thead>
+
+                %for plesalec in plesalci:
+                    <tr>
+                        <td>{{plesalec.ime}}</td>
+                        <td>{{plesalec.priimek}}</td>
+                        <td>{{plesalec.emso}}</td>
+                        <td>{{plesalec.datum_rojstva}}</td>
+                        <td>{{plesalec.spol}}</td>
+                    </tr>
+                %end
+
+            </table>
+
+        </div>
+    </div>
+</div>
