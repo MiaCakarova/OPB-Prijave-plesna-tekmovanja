@@ -57,7 +57,7 @@ class Repo:
            self.cur.execute("""
            INSERT INTO plesalec (ime, priimek, emso, datum_rojstva, spol, id_sole)
            VALUES (%s, %s, %s, %s, %s, %s)
-           """, (t.ime, t.priimek, t.emso, t.datum_rojstva, t.spol, t.id))
+           """, (t.ime, t.priimek, t.emso, t.datum_rojstva, t.spol, t.id_sole))
 
            self.conn.commit()
 
