@@ -83,6 +83,14 @@ class Repo:
         
                 return tekmovanja
 
+    def dodaj_tekmovanje(self, t: tekmovanje):
+           self.cur.execute("""
+           INSERT INTO tekmovanje (ime, lokacija, datum_od, datum_do)
+           VALUES (%s, %s, %s, %s)
+           """, (t.ime, t.lokacija, t.datum_od, t.datum_do))
+
+           self.conn.commit()
+
     def dobi_prijave(self) -> List[prijava]:
                 self.cur.execute("""
                     SELECT id_prijave, id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina

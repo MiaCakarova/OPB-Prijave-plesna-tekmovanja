@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import date
 
+from Data.models import tekmovanje
+from Data.repository import Repo
+
 URL = "https://www.plesna-zveza.si/dogodki?year=2026"
 leto = 2026
 
@@ -11,6 +14,8 @@ soup = BeautifulSoup(response.text, "html.parser")
 dogodki = soup.find("div", class_="events-listing")
 
 meseci = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "maj": 5, "jun": 6, "jul": 7, "avg": 8, "sep": 9, "okt": 10, "nov": 11, "dec": 12} #da bomo lahko zapisali kot datum
+
+repo = Repo() #povezava do baze
 
 for dogodek in dogodki.find_all("li", class_="event-item"):
 
@@ -42,6 +47,15 @@ for dogodek in dogodki.find_all("li", class_="event-item"):
         do_datum = date(leto, do_mesec, do_dan)
 
         lokacija = razdeli[1].strip()
+
+    novo_tekmovanje = tekmovanje(
+        ime=ime,
+        lokacija=lokacija,
+        datum_od=od_datum,
+        datum_do=do_datum,
+    )
+
+    repo.dodaj_tekmovanje(novo_tekmovanje) #dodamo na bazo 
 
     print("Ime:", ime)
     print("Od:", od_datum)
