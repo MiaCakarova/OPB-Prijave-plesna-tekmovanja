@@ -9,7 +9,7 @@ repo = Repo()
 plesalci_service = PlesalciService(repo)
 
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
-RELOADER = os.environ.get('BOTTLE_RELOADER', True)
+RELOADER = os.environ.get('BOTTLE_RELOADER', False)
 
 @get('/')
 def index():
@@ -26,6 +26,21 @@ def plesalci():
     seznam_plesalcev = plesalci_service.dobi_plesalce_sole(1)
 
     return template("plesalci.html", plesalci = seznam_plesalcev)
+
+@get('/dodaj_plesalca')
+def dodaj_plesalca():
+    """
+    Tukaj bo šola lahko dodala novega plesalca.
+    """
+    return template('dodaj_plesalca.html')
+
+@get('/tekmovanja')
+def tekmovanja():
+    return "Stran Tekmovanja bo dodana kmalu."
+
+@get('/prijave')
+def prijave():
+    return "Stran Moje prijave bo dodana kmalu."
 
 
 if __name__ == "__main__":
