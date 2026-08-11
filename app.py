@@ -74,6 +74,21 @@ def tekmovanja():
 def prijave():
     return "Stran Moje prijave bo dodana kmalu."
 
+@get('/prijavi_plesalca/<id_tekmovanja:int>')
+def prijavi_plesalca(id_tekmovanja):
+
+    plesalci = plesalci_service.dobi_plesalce_sole(1)
+
+    return template(
+        'prijavi_plesalca.html',
+        plesalci=plesalci,
+        id_tekmovanja=id_tekmovanja
+    )
+
+@post('/prijavi_plesalca')
+def prijavi_plesalca_post():
+    return "ali zdaj dela"
+
 
 if __name__ == "__main__":
    

@@ -8,7 +8,7 @@ from datetime import date, datetime
 @dataclass_json
 @dataclass
 class plesalec:
-    id: int = field(default=0)
+    id_plesalca: int = field(default=0)
     ime: str = field(default="")
     priimek: str = field(default="")
     emso: str = field(default="")

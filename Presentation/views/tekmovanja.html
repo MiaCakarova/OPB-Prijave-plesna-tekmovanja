@@ -16,6 +16,7 @@
                         <th>Lokacija</th>
                         <th>Datum od</th>
                         <th>Datum do</th>
+                        <th>Prijava</th>
                     </tr>
                 </thead>
 
@@ -31,6 +32,12 @@
                             %else:
                                 -
                             %end
+                        </td>
+                        <td>
+                            <a href="{{url('prijavi_plesalca', id_tekmovanja=tekmovanje.id_tekmovanja)}}"
+                                class="btn btn-light">
+                                Prijavi plesalca
+                            </a>
                         </td>
                     </tr>
                 %end

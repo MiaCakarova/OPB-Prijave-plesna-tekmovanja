@@ -1,0 +1,25 @@
+%rebase('osnova.html', naslov='Prijava plesalca', stran='tekmovanja')
+
+<div>
+    <h2>Prijava plesalca na tekmovanje</h2>
+
+    <form action="{{url('prijavi_plesalca_post')}}" method="post">
+
+        <label>Plesalec:</label>
+
+        <select name="id_plesalca">
+
+            %for plesalec in plesalci:
+                <option value="{{plesalec.id_plesalca}}">
+                    {{plesalec.ime}} {{plesalec.priimek}}
+                </option>
+            %end
+
+        </select>
+
+        <input type="hidden"
+               name="id_tekmovanja"
+               value="{{id_tekmovanja}}">
+
+    </form>
+</div>
