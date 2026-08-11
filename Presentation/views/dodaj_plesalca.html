@@ -1,2 +1,54 @@
 %rebase('osnova.html', naslov='Dodaj plesalca', stran='plesalci')
 
+%rebase('osnova.html', naslov='Dodaj plesalca', stran='plesalci')
+
+<div>
+    <h2>Dodaj novega plesalca</h2>
+
+    <form action="{{url('/dodaj_plesalca')}}" method="post">
+
+        <div>
+            <label>Ime:</label>
+            <input type="text" name="ime">
+        </div>
+
+        <br>
+
+        <div>
+            <label>Priimek:</label>
+            <input type="text" name="priimek">
+        </div>
+
+        <br>
+
+        <div>
+            <label>EMŠO:</label>
+            <input type="text" name="emso">
+        </div>
+
+        <br>
+
+        <div>
+            <label>Datum rojstva:</label>
+            <input type="date" name="datum_rojstva">
+        </div>
+
+        <br>
+
+        <div>
+            <label>Spol:</label>
+            <select name="spol">
+                <option value="ženski">ženski</option>
+                <option value="moški">moški</option>
+                <option value="drugo">drugo</option>
+            </select>
+        </div>
+
+        <br>
+
+        <button type="submit" class="btn btn-primary">
+            Dodaj plesalca
+        </button>
+
+    </form>
+</div>

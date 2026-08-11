@@ -1,0 +1,42 @@
+%rebase('osnova.html', naslov='Tekmovanja', stran='tekmovanja')
+
+<div>
+    <h2>Tekmovanja</h2>
+
+    <br>
+
+    <div style="display: flex;">
+        <div style="flex:1;">
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Lokacija</th>
+                        <th>Datum od</th>
+                        <th>Datum do</th>
+                    </tr>
+                </thead>
+
+                %for tekmovanje in tekmovanja:
+                    <tr>
+                        <td>{{tekmovanje.ime}}</td>
+                        <td>{{tekmovanje.lokacija}}</td>
+                        <td>{{tekmovanje.datum_od}}</td>
+
+                        <td>
+                            %if tekmovanje.datum_do:
+                                {{tekmovanje.datum_do}}
+                            %else:
+                                -
+                            %end
+                        </td>
+                    </tr>
+                %end
+
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,12 +1,18 @@
 from Presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 
 from Services.plesalci_service import PlesalciService 
+from Services.tekmovanja_service import TekmovanjaService
 from Data.repository import Repo
+from Data.models import plesalec
+from datetime import date
+
+from bottle import response
 
 import os
 
 repo = Repo()
 plesalci_service = PlesalciService(repo)
+tekmovanja_service = TekmovanjaService(repo)
 
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', False)
@@ -25,6 +31,8 @@ def plesalci():
     """
     seznam_plesalcev = plesalci_service.dobi_plesalce_sole(1)
 
+    response.content_type = 'text/html; charset=UTF-8'
+
     return template("plesalci.html", plesalci = seznam_plesalcev)
 
 @get('/dodaj_plesalca')
@@ -32,11 +40,35 @@ def dodaj_plesalca():
     """
     Tukaj bo šola lahko dodala novega plesalca.
     """
+    response.content_type = 'text/html; charset=UTF-8'
     return template('dodaj_plesalca.html')
+
+@post('/dodaj_plesalca')
+def dodaj_plesalca_post():
+
+    ime = request.forms.getunicode('ime')
+    priimek = request.forms.getunicode('priimek')
+    emso = request.forms.getunicode('emso')
+    datum_rojstva = request.forms.getunicode('datum_rojstva')
+    spol = request.forms.getunicode('spol')
+
+    nov_plesalec = plesalec(
+        ime=ime,
+        priimek=priimek,
+        emso=emso,
+        datum_rojstva=date.fromisoformat(datum_rojstva),
+        spol=spol,
+        id_sole=1
+    )
+
+    plesalci_service.dodaj_plesalca(nov_plesalec)
+
+    redirect(url('/plesalci'))
 
 @get('/tekmovanja')
 def tekmovanja():
-    return "Stran Tekmovanja bo dodana kmalu."
+    seznam_tekmovanj = tekmovanja_service.dobi_tekmovanja()
+    return template("tekmovanja.html", tekmovanja = seznam_tekmovanj)
 
 @get('/prijave')
 def prijave():
