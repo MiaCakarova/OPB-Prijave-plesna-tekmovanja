@@ -61,6 +61,15 @@ class Repo:
 
            self.conn.commit()
 
+    def dobi_plesalca(self, id_plesalca: int) -> plesalec:  #to potrebuje aplikacija ko preverja ali plesalec ustreza starostni skupini
+            self.cur.execute("""
+            SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
+            FROM plesalec
+            WHERE id_plesalca = %s
+            """, (id_plesalca,))
+
+            return plesalec.from_dict(self.cur.fetchone())
+
     def dobi_sole(self) -> List[plesna_sola]:
             self.cur.execute("""
                 SELECT id, ime, naslov, kontakt
@@ -91,6 +100,15 @@ class Repo:
 
            self.conn.commit()
 
+    def dobi_tekmovanje(self, id_tekmovanja: int) -> tekmovanje: #to potrebuje aplikacija ko preverja ali plesalec ustreza starostni skupini
+            self.cur.execute("""
+            SELECT id_tekmovanja, ime, lokacija, datum_od, datum_do
+            FROM tekmovanje
+            WHERE id_tekmovanja = %s
+            """, (id_tekmovanja,))
+
+            return tekmovanje.from_dict(self.cur.fetchone())
+
     def dobi_prijave(self) -> List[prijava]:
                 self.cur.execute("""
                     SELECT id_prijave, id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina
@@ -101,3 +119,11 @@ class Repo:
                 prijave = [prijava.from_dict(t) for t in self.cur.fetchall()]
         
                 return prijave
+
+    def dodaj_prijavo(self, t: prijava):
+            self.cur.execute("""
+            INSERT INTO prijava (id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """, (t.id_sole, t.id_plesalca, t.id_tekmovanja, t.kategorija, t.disciplina, t.starostna_skupina))
+
+            self.conn.commit()

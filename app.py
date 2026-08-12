@@ -2,8 +2,10 @@ from Presentation.bottleext import get, post, run, request, template, redirect, 
 
 from Services.plesalci_service import PlesalciService 
 from Services.tekmovanja_service import TekmovanjaService
+from Services.prijave_service import PrijaveService
 from Data.repository import Repo
 from Data.models import plesalec
+from Data.models import prijava
 from datetime import date
 
 from bottle import response
@@ -13,6 +15,7 @@ import os
 repo = Repo()
 plesalci_service = PlesalciService(repo)
 tekmovanja_service = TekmovanjaService(repo)
+prijave_service = PrijaveService(repo)
 
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', False)
@@ -87,7 +90,24 @@ def prijavi_plesalca(id_tekmovanja):
 
 @post('/prijavi_plesalca')
 def prijavi_plesalca_post():
-    return "ali zdaj dela"
+    id_plesalca = int(request.forms.getunicode('id_plesalca'))
+    id_tekmovanja = int(request.forms.getunicode('id_tekmovanja'))
+    kategorija = request.forms.getunicode('kategorija')
+    disciplina = request.forms.getunicode('disciplina')
+    starostna_skupina = request.forms.getunicode('starostna_skupina')
+
+    nova_prijava = prijava(
+        id_sole=1,
+        id_plesalca=id_plesalca,
+        id_tekmovanja=id_tekmovanja,
+        kategorija=kategorija,
+        disciplina=disciplina,
+        starostna_skupina=starostna_skupina
+    )
+
+    prijave_service.dodaj_prijavo(nova_prijava)
+
+    redirect(url('/prijave'))
 
 
 if __name__ == "__main__":
