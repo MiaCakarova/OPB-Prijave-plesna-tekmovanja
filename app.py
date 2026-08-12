@@ -75,18 +75,13 @@ def tekmovanja():
 
 @get('/prijave')
 def prijave():
-    return "Stran Moje prijave bo dodana kmalu."
+    seznam_prijav = prijave_service.dobi_prijave_dto(1)
+    return template('prijave.html', prijave=seznam_prijav, sporocilo=None)
 
 @get('/prijavi_plesalca/<id_tekmovanja:int>')
 def prijavi_plesalca(id_tekmovanja):
-
     plesalci = plesalci_service.dobi_plesalce_sole(1)
-
-    return template(
-        'prijavi_plesalca.html',
-        plesalci=plesalci,
-        id_tekmovanja=id_tekmovanja
-    )
+    return template('prijavi_plesalca.html', plesalci=plesalci, id_tekmovanja=id_tekmovanja, napaka = None)
 
 @post('/prijavi_plesalca')
 def prijavi_plesalca_post():
@@ -96,18 +91,21 @@ def prijavi_plesalca_post():
     disciplina = request.forms.getunicode('disciplina')
     starostna_skupina = request.forms.getunicode('starostna_skupina')
 
-    nova_prijava = prijava(
-        id_sole=1,
-        id_plesalca=id_plesalca,
-        id_tekmovanja=id_tekmovanja,
-        kategorija=kategorija,
-        disciplina=disciplina,
-        starostna_skupina=starostna_skupina
-    )
+    nova_prijava = prijava(id_sole=1, id_plesalca=id_plesalca, id_tekmovanja=id_tekmovanja, kategorija=kategorija, disciplina=disciplina, starostna_skupina=starostna_skupina)
 
-    prijave_service.dodaj_prijavo(nova_prijava)
+    try:
+        prijave_service.dodaj_prijavo(nova_prijava)
+        seznam_prijav = prijave_service.dobi_prijave_dto(1)
+        
+        return template('prijave.html', prijave=seznam_prijav, sporocilo="Prijava je bila uspešna!")
+    
+    except ValueError as napaka:
+        plesalci = plesalci_service.dobi_plesalce_sole(1)
 
-    redirect(url('/prijave'))
+        return template('prijavi_plesalca.html', plesalci=plesalci, id_tekmovanja=id_tekmovanja, napaka=str(napaka))
+
+
+
 
 
 if __name__ == "__main__":

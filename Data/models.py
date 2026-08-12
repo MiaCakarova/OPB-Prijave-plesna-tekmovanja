@@ -47,4 +47,13 @@ class prijava:
     disciplina: str = field(default="")
     starostna_skupina: str = field(default="")
 
+@dataclass_json
+@dataclass
+class prijavaDto:
+    id_prijave: int = field(default=0)
+    plesalec: str = field(default="")
+    tekmovanje: str = field(default="")
+    kategorija: str = field(default="")
+    disciplina: str = field(default="")
+    starostna_skupina: str = field(default="")
 

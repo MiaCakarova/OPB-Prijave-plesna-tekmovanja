@@ -1,5 +1,11 @@
 %rebase('osnova.html', naslov='Prijava plesalca', stran='tekmovanja')
 
+%if defined('napaka') and napaka:
+    <div class="alert alert-danger">
+        {{napaka}}
+    </div>
+%end
+
 <div>
     <h2>Prijava plesalca na tekmovanje</h2>
 

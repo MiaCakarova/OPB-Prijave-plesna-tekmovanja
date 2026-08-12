@@ -8,7 +8,7 @@ import Data.auth as auth
 
 from typing import List
 
-from Data.models import (plesalec, plesna_sola, tekmovanje, prijava)
+from Data.models import (plesalec, plesna_sola, tekmovanje, prijava, prijavaDto)
 
 
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
@@ -127,3 +127,25 @@ class Repo:
             """, (t.id_sole, t.id_plesalca, t.id_tekmovanja, t.kategorija, t.disciplina, t.starostna_skupina))
 
             self.conn.commit()
+
+    def dobi_prijave_dto(self, id_sole: int) -> List[prijavaDto]:
+            self.cur.execute("""
+            SELECT
+                p.id_prijave,
+                pl.ime || ' ' || pl.priimek AS plesalec,
+                t.ime AS tekmovanje,
+                p.kategorija,
+                p.disciplina,
+                p.starostna_skupina
+            FROM prijava p
+            JOIN plesalec pl
+                ON p.id_plesalca = pl.id_plesalca
+            JOIN tekmovanje t
+                ON p.id_tekmovanja = t.id_tekmovanja
+            WHERE p.id_sole = %s
+            ORDER BY t.datum_od, pl.priimek, pl.ime
+            """, (id_sole,))
+
+            prijave = [prijavaDto.from_dict(t) for t in self.cur.fetchall()]
+
+            return prijave

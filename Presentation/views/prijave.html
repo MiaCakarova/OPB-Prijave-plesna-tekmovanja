@@ -1,0 +1,35 @@
+%rebase('osnova.html', naslov='Moje prijave', stran='prijave')
+
+%if sporocilo:
+    <div class="alert alert-success">
+        {{sporocilo}}
+    </div>
+%end
+
+<div>
+    <h2>Moje prijave</h2>
+
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Plesalec</th>
+                <th>Tekmovanje</th>
+                <th>Kategorija</th>
+                <th>Disciplina</th>
+                <th>Starostna skupina</th>
+            </tr>
+        </thead>
+
+        %for prijava in prijave:
+            <tr>
+                <td>{{prijava.plesalec}}</td>
+                <td>{{prijava.tekmovanje}}</td>
+                <td>{{prijava.kategorija}}</td>
+                <td>{{prijava.disciplina}}</td>
+                <td>{{prijava.starostna_skupina}}</td>
+            </tr>
+        %end
+    </table>
+</div>
