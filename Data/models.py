@@ -24,6 +24,8 @@ class plesna_sola:
     ime: str = field(default="")
     naslov: str = field(default="")
     kontakt: str = field(default="") #lahko dajo tel ali mail
+    uporabnisko_ime: str = field(default="")
+    password_hash: str = field(default="")
 
 #### Tekmovanje ####
 @dataclass_json

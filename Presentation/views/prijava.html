@@ -1,0 +1,29 @@
+%rebase('osnova.html', naslov='Prijava', stran='prijava')
+
+<div>
+    <h2>Prijava plesne šole</h2>
+
+    %if napaka:
+        <div class="alert alert-danger">
+            {{napaka}}
+        </div>
+    %end
+
+    <form action="{{url('prijava_post')}}" method="post">
+
+        <label>Uporabniško ime:</label>
+        <input type="text" name="uporabnik">
+
+        <br><br>
+
+        <label>Geslo:</label>
+        <input type="password" name="geslo">
+
+        <br><br>
+
+        <button type="submit" class="btn btn-primary">
+            Prijava
+        </button>
+
+    </form>
+</div>

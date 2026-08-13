@@ -81,6 +81,30 @@ class Repo:
     
             return sole
 
+    def dobi_solo_ui(self, uporabnisko_ime: str) -> plesna_sola:
+            self.conn.rollback()
+            
+            self.cur.execute("""
+            SELECT id, ime, naslov, kontakt, uporabnisko_ime, password_hash
+            FROM plesna_sola
+            WHERE uporabnisko_ime = %s
+            """, (uporabnisko_ime,))
+
+            izid = self.cur.fetchone()
+
+            if izid is None:
+                return None
+
+            return plesna_sola.from_dict(izid)
+
+    def dodaj_solo(self, t: plesna_sola):
+            self.cur.execute("""
+            INSERT INTO plesna_sola (ime, naslov, kontakt, uporabnisko_ime, password_hash)
+            VALUES (%s, %s, %s, %s, %s)
+            """, (t.ime, t.naslov, t.kontakt, t.uporabnisko_ime, t.password_hash))
+
+            self.conn.commit()
+
     def dobi_tekmovanja(self) -> List[tekmovanje]:
                 self.cur.execute("""
                     SELECT id_tekmovanja, ime, lokacija, datum_od, datum_do
@@ -121,12 +145,17 @@ class Repo:
                 return prijave
 
     def dodaj_prijavo(self, t: prijava):
-            self.cur.execute("""
-            INSERT INTO prijava (id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            """, (t.id_sole, t.id_plesalca, t.id_tekmovanja, t.kategorija, t.disciplina, t.starostna_skupina))
+            try:
+                self.cur.execute("""
+                INSERT INTO prijava (id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """, (t.id_sole, t.id_plesalca, t.id_tekmovanja, t.kategorija, t.disciplina, t.starostna_skupina))
 
-            self.conn.commit()
+                self.conn.commit()
+
+            except:
+                   self.conn.rollback()
+                   raise
 
     def dobi_prijave_dto(self, id_sole: int) -> List[prijavaDto]:
             self.cur.execute("""
