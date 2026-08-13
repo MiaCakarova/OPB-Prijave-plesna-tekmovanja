@@ -172,6 +172,25 @@ def odjava():
 
     return template('prijava.html', napaka=None)
 
+@get('/registracija')
+def registracija():
+    return template('registracija.html', napaka=None)
+
+@post('/registracija')
+def registracija_post():
+    ime = request.forms.getunicode('ime')
+    naslov = request.forms.getunicode('naslov')
+    kontakt = request.forms.getunicode('kontakt')
+    uporabnik = request.forms.getunicode('uporabnik')
+    geslo = request.forms.getunicode('geslo')
+
+    uspeh = auth.dodaj_uporabnika(ime, naslov, kontakt, uporabnik, geslo)
+
+    if not uspeh:
+        return template('registracija.html', napaka="Uporabniško ime že obstaja.")
+
+    return template('prijava.html', napaka=None)
+
 def dobi_id_sole():
     return int(request.get_cookie("id_sole"))
 
