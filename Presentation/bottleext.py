@@ -24,9 +24,10 @@ def template(*largs, **kwargs):
     """
     Izpis predloge s podajanjem funkcije url.
     """
+    uporabnik = bottle.request.get_cookie("uporabnik")
 
     
-    return bottle.template(*largs, **kwargs, url=bottle.url)
+    return bottle.template(*largs, **kwargs, uporabnik = uporabnik, url=bottle.url)
 
 def template_user(*largs, **kwargs):
     """

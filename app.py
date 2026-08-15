@@ -35,7 +35,7 @@ def cookie_required(f):
 
         if cookie:
             return f(*args, **kwargs)
-        return template("prijava.html",uporabnik=None, rola=None, napaka="Potrebna je prijava!")
+        return template("prijava.html", napaka="Potrebna je prijava!")
         
     return decorated
 
@@ -185,6 +185,9 @@ def registracija_post():
     kontakt = request.forms.getunicode('kontakt')
     uporabnik = request.forms.getunicode('uporabnik')
     geslo = request.forms.getunicode('geslo')
+
+    if any(znak in uporabnik.lower() for znak in ['č', 'š', 'ž']):
+        return template('registracija.html', napaka="Uporabniško ime ne sme vsebovati znakov 'č', 'š', 'ž'.")
 
     uspeh = auth.dodaj_uporabnika(ime, naslov, kontakt, uporabnik, geslo)
 
