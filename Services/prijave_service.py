@@ -48,9 +48,7 @@ class PrijaveService:
             raise ValueError("Neveljavna starostna skupina.")
 
         if not ustreza:
-            raise ValueError(
-                f"Plesalec ne ustreza izbrani starostni skupini. "
-            )
+            raise ValueError(f"Plesalec ne ustreza izbrani starostni skupini.")
 
     def dobi_prijave_dto(self, id_sole: int):
         return self.repo.dobi_prijave_dto(id_sole)

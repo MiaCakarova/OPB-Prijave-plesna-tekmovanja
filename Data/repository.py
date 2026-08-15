@@ -15,6 +15,7 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 
 DB_PORT = os.environ.get("POSTGRES_PORT", 5432) #povežemo se z bazo
 
+#to je datoteka, ki 'komunicira' z bazo, v njej definiramo funkcije, ki jih bomo uporabljali
 
 class Repo:
     def __init__(self):
@@ -30,6 +31,8 @@ class Repo:
             cursor_factory=psycopg2.extras.DictCursor
         )
 
+    #### Plesalci ####
+
     def dobi_plesalce(self) -> List[plesalec]:
         self.cur.execute("""
             SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
@@ -42,123 +45,124 @@ class Repo:
         return plesalci
 
     def dobi_plesalce_sole(self, id_sole: int) -> List[plesalec]: #seznam vseh plesalcev na neki soli
-           self.cur.execute("""
-           SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
-           FROM plesalec
-           WHERE id_sole = %s  
-           ORDER BY priimek, ime
-           """, (id_sole,))
+        self.cur.execute("""
+            SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
+            FROM plesalec
+            WHERE id_sole = %s  
+            ORDER BY priimek, ime
+        """, (id_sole,))
 
-           plesalci = [plesalec.from_dict(t) for t in self.cur.fetchall()]
+        plesalci = [plesalec.from_dict(t) for t in self.cur.fetchall()]
 
-           return plesalci
+        return plesalci
 
     def dodaj_plesalca(self, t: plesalec): #če za nekega plesalca še ni podatkov v aplikaciji, ga šola lahko doda
-           self.cur.execute("""
-           INSERT INTO plesalec (ime, priimek, emso, datum_rojstva, spol, id_sole)
-           VALUES (%s, %s, %s, %s, %s, %s)
-           """, (t.ime, t.priimek, t.emso, t.datum_rojstva, t.spol, t.id_sole))
+        self.cur.execute("""
+            INSERT INTO plesalec (ime, priimek, emso, datum_rojstva, spol, id_sole)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (t.ime, t.priimek, t.emso, t.datum_rojstva, t.spol, t.id_sole))
 
-           self.conn.commit()
+        self.conn.commit()
 
-    def dobi_plesalca(self, id_plesalca: int) -> plesalec:  #to potrebuje aplikacija ko preverja ali plesalec ustreza starostni skupini
-            self.cur.execute("""
+    def dobi_plesalca(self, id_plesalca: int) -> plesalec: #to potrebuje aplikacija ko preverja ali plesalec ustreza starostni skupini
+        self.cur.execute("""
             SELECT id_plesalca, ime, priimek, emso, datum_rojstva, spol, id_sole
             FROM plesalec
             WHERE id_plesalca = %s
-            """, (id_plesalca,))
+        """, (id_plesalca,))
 
-            return plesalec.from_dict(self.cur.fetchone())
+        return plesalec.from_dict(self.cur.fetchone())
+
+    #### Plesne šole ####
 
     def dobi_sole(self) -> List[plesna_sola]:
-            self.cur.execute("""
-                SELECT id, ime, naslov, kontakt
-                FROM plesna_sola
-                ORDER BY  ime
-            """)
+        self.cur.execute("""
+            SELECT id, ime, naslov, kontakt
+            FROM plesna_sola
+            ORDER BY  ime
+        """)
     
-            sole = [plesna_sola.from_dict(t) for t in self.cur.fetchall()]
+        sole = [plesna_sola.from_dict(t) for t in self.cur.fetchall()]
     
-            return sole
+        return sole
 
-    def dobi_solo_ui(self, uporabnisko_ime: str) -> plesna_sola:
-            self.conn.rollback()
+    def dobi_solo_ui(self, uporabnisko_ime: str) -> plesna_sola: #s to funkcijo aplikacija poišče plesno šolo s tem uporabniškim imenom (če obstaja)
+        self.conn.rollback()
             
-            self.cur.execute("""
+        self.cur.execute("""
             SELECT id, ime, naslov, kontakt, uporabnisko_ime, password_hash
             FROM plesna_sola
             WHERE uporabnisko_ime = %s
-            """, (uporabnisko_ime,))
+        """, (uporabnisko_ime,))
 
-            izid = self.cur.fetchone()
+        izid = self.cur.fetchone()
 
-            if izid is None:
-                return None
+        if izid is None:
+            return None
 
-            return plesna_sola.from_dict(izid)
+        return plesna_sola.from_dict(izid)
 
     def dodaj_solo(self, t: plesna_sola):
-            self.cur.execute("""
+        self.cur.execute("""
             INSERT INTO plesna_sola (ime, naslov, kontakt, uporabnisko_ime, password_hash)
             VALUES (%s, %s, %s, %s, %s)
-            """, (t.ime, t.naslov, t.kontakt, t.uporabnisko_ime, t.password_hash))
+        """, (t.ime, t.naslov, t.kontakt, t.uporabnisko_ime, t.password_hash))
 
-            self.conn.commit()
+        self.conn.commit()
+
+    #### Tekmovanja ####
 
     def dobi_tekmovanja(self) -> List[tekmovanje]:
-                self.cur.execute("""
-                    SELECT id_tekmovanja, ime, lokacija, datum_od, datum_do
-                    FROM tekmovanje
-                    ORDER BY  datum_od
-                """)
+        self.cur.execute("""
+            SELECT id_tekmovanja, ime, lokacija, datum_od, datum_do
+            FROM tekmovanje
+            ORDER BY  datum_od
+        """)
         
-                tekmovanja = [tekmovanje.from_dict(t) for t in self.cur.fetchall()]
+        tekmovanja = [tekmovanje.from_dict(t) for t in self.cur.fetchall()]
         
-                return tekmovanja
+        return tekmovanja
 
     def dodaj_tekmovanje(self, t: tekmovanje):
-           self.cur.execute("""
-           INSERT INTO tekmovanje (ime, lokacija, datum_od, datum_do)
-           VALUES (%s, %s, %s, %s)
-           """, (t.ime, t.lokacija, t.datum_od, t.datum_do))
+        self.cur.execute("""
+            INSERT INTO tekmovanje (ime, lokacija, datum_od, datum_do)
+            VALUES (%s, %s, %s, %s)
+        """, (t.ime, t.lokacija, t.datum_od, t.datum_do))
 
-           self.conn.commit()
+        self.conn.commit()
 
-    def dobi_tekmovanje(self, id_tekmovanja: int) -> tekmovanje: #to potrebuje aplikacija ko preverja ali plesalec ustreza starostni skupini
-            self.cur.execute("""
+    def dobi_tekmovanje(self, id_tekmovanja: int) -> tekmovanje: 
+        self.cur.execute("""
             SELECT id_tekmovanja, ime, lokacija, datum_od, datum_do
             FROM tekmovanje
             WHERE id_tekmovanja = %s
-            """, (id_tekmovanja,))
+        """, (id_tekmovanja,))
 
-            return tekmovanje.from_dict(self.cur.fetchone())
+        return tekmovanje.from_dict(self.cur.fetchone())
+
+    #### Prijave ####
 
     def dobi_prijave(self) -> List[prijava]:
-                self.cur.execute("""
-                    SELECT id_prijave, id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina
-                    FROM prijava
-                    ORDER BY  id_prijave
-                """)
+        self.cur.execute("""
+            SELECT id_prijave, id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina
+            FROM prijava
+            ORDER BY  id_prijave
+        """)
         
-                prijave = [prijava.from_dict(t) for t in self.cur.fetchall()]
+        prijave = [prijava.from_dict(t) for t in self.cur.fetchall()]
         
-                return prijave
+        return prijave
 
     def dodaj_prijavo(self, t: prijava):
-            try:
-                self.cur.execute("""
-                INSERT INTO prijava (id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                """, (t.id_sole, t.id_plesalca, t.id_tekmovanja, t.kategorija, t.disciplina, t.starostna_skupina))
+        self.cur.execute("""
+            INSERT INTO prijava (id_sole, id_plesalca, id_tekmovanja, kategorija, disciplina, starostna_skupina)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (t.id_sole, t.id_plesalca, t.id_tekmovanja, t.kategorija, t.disciplina, t.starostna_skupina))
 
-                self.conn.commit()
+        self.conn.commit()
 
-            except:
-                   self.conn.rollback()
-                   raise
-
-    def dobi_prijave_dto(self, id_sole: int) -> List[prijavaDto]:
-            self.cur.execute("""
+    def dobi_prijave_dto(self, id_sole: int) -> List[prijavaDto]: #s tem bomo jasno videli podatke prijave
+        self.cur.execute("""
             SELECT
                 p.id_prijave,
                 pl.ime || ' ' || pl.priimek AS plesalec,
@@ -173,8 +177,8 @@ class Repo:
                 ON p.id_tekmovanja = t.id_tekmovanja
             WHERE p.id_sole = %s
             ORDER BY t.datum_od, pl.priimek, pl.ime
-            """, (id_sole,))
+        """, (id_sole,))
 
-            prijave = [prijavaDto.from_dict(t) for t in self.cur.fetchall()]
+        prijave = [prijavaDto.from_dict(t) for t in self.cur.fetchall()]
 
-            return prijave
+        return prijave

@@ -24,7 +24,7 @@ class plesna_sola:
     ime: str = field(default="")
     naslov: str = field(default="")
     kontakt: str = field(default="") #lahko dajo tel ali mail
-    uporabnisko_ime: str = field(default="")
+    uporabnisko_ime: str = field(default="") #ne sme vsebovati šumnika in mora biti unikatno
     password_hash: str = field(default="")
 
 #### Tekmovanje ####
@@ -35,7 +35,7 @@ class tekmovanje:
     ime: str = field(default="")
     lokacija: str = field(default="")
     datum_od: date = field(default=None)
-    datum_do: date = field(default=None) #če tekmovanje traja en dan bo to polje prazno
+    datum_do: date = field(default=None) #če tekmovanje traja en dan bo to polje prazno oz '-'
 
 #### Prijava ####
 @dataclass_json
@@ -51,7 +51,7 @@ class prijava:
 
 @dataclass_json
 @dataclass
-class prijavaDto:
+class prijavaDto: #s tem se bojo podatki primerno prenesli ko bomo pogledali seznam prijav (ker ima sicer prijava veliko tujih ključev, ki jih želimo prikazati)
     id_prijave: int = field(default=0)
     plesalec: str = field(default="")
     tekmovanje: str = field(default="")

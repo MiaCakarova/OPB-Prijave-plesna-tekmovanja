@@ -5,6 +5,8 @@ from datetime import date
 from Data.models import tekmovanje
 from Data.repository import Repo
 
+#iz spleta bomo dobili podatke o prihajajočih tekmovanjih
+
 URL = "https://www.plesna-zveza.si/dogodki?year=2026"
 leto = 2026
 
@@ -48,12 +50,7 @@ for dogodek in dogodki.find_all("li", class_="event-item"):
 
         lokacija = razdeli[1].strip()
 
-    novo_tekmovanje = tekmovanje(
-        ime=ime,
-        lokacija=lokacija,
-        datum_od=od_datum,
-        datum_do=do_datum,
-    )
+    novo_tekmovanje = tekmovanje(ime=ime, lokacija=lokacija, datum_od=od_datum, datum_do=do_datum,)
 
     repo.dodaj_tekmovanje(novo_tekmovanje) #dodamo na bazo 
 

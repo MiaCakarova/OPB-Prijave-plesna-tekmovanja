@@ -47,6 +47,8 @@ def index():
     """
     return template('domov.html')
 
+#### Plesalci ####
+
 @get('/plesalci')
 @cookie_required
 def plesalci():
@@ -92,11 +94,15 @@ def dodaj_plesalca_post():
 
     redirect(url('/plesalci'))
 
+    #### Tekmovanja ####
+
 @get('/tekmovanja')
 @cookie_required
 def tekmovanja():
     seznam_tekmovanj = tekmovanja_service.dobi_tekmovanja()
     return template("tekmovanja.html", tekmovanja = seznam_tekmovanj)
+
+#### Prijave ####
 
 @get('/prijave')
 @cookie_required
@@ -140,6 +146,7 @@ def prijavi_plesalca_post():
 
         return template('prijavi_plesalca.html', plesalci=plesalci, id_tekmovanja=id_tekmovanja, napaka=str(napaka))
 
+#### Prijava/odjava/registracija uporabnika ####
 
 @get('/prijava')
 def prijava():
