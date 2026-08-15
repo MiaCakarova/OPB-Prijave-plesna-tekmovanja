@@ -9,6 +9,12 @@
         </div>
     %end
 
+    %if get('sporocilo'):
+        <div class="alert alert-success">
+            {{sporocilo}}
+        </div>
+    %end
+
     <form action="{{url('prijava_post')}}" method="post">
 
         <label>Uporabniško ime:</label>

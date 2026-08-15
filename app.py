@@ -194,7 +194,7 @@ def registracija_post():
     if not uspeh:
         return template('registracija.html', napaka="Uporabniško ime že obstaja.")
 
-    return template('prijava.html', napaka=None)
+    return template('prijava.html', napaka=None, sporocilo = "Po registraciji je potrebna prijava.")
 
 def dobi_id_sole():
     return int(request.get_cookie("id_sole"))
