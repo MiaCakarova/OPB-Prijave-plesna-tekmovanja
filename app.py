@@ -53,10 +53,10 @@ def index():
 @cookie_required
 def plesalci():
     """
-    Stran 'Moji plesalci'. Aplikacija bo dobila id od šole, ki se prijavi.
+    Stran 'Moji plesalci'
     """
-    id_sole = dobi_id_sole()
-    seznam_plesalcev = plesalci_service.dobi_plesalce_sole(id_sole)
+    id_sole = dobi_id_sole() #aplikacija zve kdo je trenutno prijavljen
+    seznam_plesalcev = plesalci_service.dobi_plesalce_sole(id_sole) #dobimo samo plesalce te plesne šole, druge šole ne rabijo videti naših plesalcev
 
     response.content_type = 'text/html; charset=UTF-8'
 
@@ -75,7 +75,7 @@ def dodaj_plesalca():
 @cookie_required
 def dodaj_plesalca_post():
 
-    ime = request.forms.getunicode('ime')
+    ime = request.forms.getunicode('ime') #unicode zavzame tudi šumnike 
     priimek = request.forms.getunicode('priimek')
     emso = request.forms.getunicode('emso')
     datum_rojstva = request.forms.getunicode('datum_rojstva')
@@ -90,11 +90,11 @@ def dodaj_plesalca_post():
         id_sole=dobi_id_sole()
     )
 
-    plesalci_service.dodaj_plesalca(nov_plesalec)
+    plesalci_service.dodaj_plesalca(nov_plesalec) #pošlje servicu da preveri a vse štima
 
-    redirect(url('/plesalci'))
+    redirect(url('/plesalci')) #potem nas spet vrže na stran 'Moji plesalci', kjer lahko vidimo dodanega plesalca
 
-    #### Tekmovanja ####
+#### Tekmovanja ####
 
 @get('/tekmovanja')
 @cookie_required
@@ -111,7 +111,7 @@ def prijave():
     seznam_prijav = prijave_service.dobi_prijave_dto(id_sole)
     return template('prijave.html', prijave=seznam_prijav, sporocilo=None)
 
-@get('/prijavi_plesalca/<id_tekmovanja:int>')
+@get('/prijavi_plesalca/<id_tekmovanja:int>') #v url-ju se doda id tekmovanja
 @cookie_required
 def prijavi_plesalca(id_tekmovanja):
     id_sole = dobi_id_sole()
