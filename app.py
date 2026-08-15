@@ -70,6 +70,7 @@ def dodaj_plesalca():
     return template('dodaj_plesalca.html')
 
 @post('/dodaj_plesalca')
+@cookie_required
 def dodaj_plesalca_post():
 
     ime = request.forms.getunicode('ime')
@@ -112,6 +113,7 @@ def prijavi_plesalca(id_tekmovanja):
     return template('prijavi_plesalca.html', plesalci=plesalci, id_tekmovanja=id_tekmovanja, napaka = None)
 
 @post('/prijavi_plesalca')
+@cookie_required
 def prijavi_plesalca_post():
     id_plesalca = int(request.forms.getunicode('id_plesalca'))
     id_tekmovanja = int(request.forms.getunicode('id_tekmovanja'))
