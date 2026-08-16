@@ -4,8 +4,8 @@ Avtor: Mia Čakarova
 ## O projektu
 CompetiDance je spletna aplikacija, preko katere lahko plesne šole Slovenije prijavijo svoje plesalce na prihajajoča tekmovanja.
 
-### Uporabniška izkušnja
-Uporabniki aplikacije so izključno plesne šole. Ob prijavi imajo vpogled izključno do svojih plesalcev, prihajajočih tekmovanj in zabeleženih prijav. Plesalce lahko sproti dodajajo in prijavljajo. Pri prijavi plesalca na tekmovanje tudi sama aplikacija preveri, ali tekmovalec zadošča starostni skupini 
+### Funkcionalnosti aplikacije
+Uporabniki aplikacije so izključno plesne šole. Ob prijavi imajo vpogled izključno do svojih plesalcev, prihajajočih tekmovanj in zabeleženih prijav. Plesalce lahko sproti dodajajo in prijavljajo. Če profila še nimajo, se morajo v aplikacijo registrirati. Pri prijavi plesalca na tekmovanje tudi sama aplikacija preveri, ali tekmovalec ustreza starostni skupini 
 (starostne skupine:
   - do vključno 12 let: otroci,
   - od 13 do 16 let: mladinci,
