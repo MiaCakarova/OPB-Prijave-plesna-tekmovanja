@@ -16,10 +16,10 @@ Uporabniki aplikacije so izključno plesne šole. Ob prijavi imajo vpogled izklj
 ![ER-diag drawio (1)](https://github.com/user-attachments/assets/18b9aba3-4be6-4efa-9a88-60e531ac2e2e)
 
 ## Zagon
-1. Klonirajte repozitorij: v terminal vpišite git clone https://github.com/MiaCakarova/OPB-Prijave-plesna-tekmovanja.git
-2. Postavite se v mapo projekta: cd OPB-Prijave-plesna-tekmovanja
-3. Ustvarite in aktivirajte virtualno okolje: python -m venv env, env\Scripts\Activate
-4. Naložite vse potrebne knjižnice: pip install -r requirements.txt
+1. Klonirajte repozitorij: v terminal vpišite 'git clone https://github.com/MiaCakarova/OPB-Prijave-plesna-tekmovanja.git'
+2. Postavite se v mapo projekta: 'cd OPB-Prijave-plesna-tekmovanja'
+3. Ustvarite in aktivirajte virtualno okolje: 'python -m venv env', 'env\Scripts\Activate'
+4. Naložite vse potrebne knjižnice: 'pip install -r requirements.txt'
 5. Datoteko `Data/auth_public.py` kopirajte v `Data/auth.py` in vanjo vnesite podatke za povezavo s podatkovno bazo. (Za dostop do baze je namenjen uporabnik `javnost`, ki ima nastavljene potrebne pravice za uporabo aplikacije.)
-6. Zaženite aplikacijo: python app.py
+6. Zaženite aplikacijo: 'python app.py'
 7. Aplikacija je nato dostopna na naslovu `http://localhost:8080/`.
