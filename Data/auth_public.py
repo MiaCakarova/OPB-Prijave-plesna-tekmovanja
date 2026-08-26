@@ -2,5 +2,5 @@
 
 db = 'sem2025_cakarmi'
 host = 'baza.fmf.uni-lj.si'
-user = 'uporabnisko_ime'
-password = 'geslo'
+user = 'javnost'
+password = 'javnogeslo'
